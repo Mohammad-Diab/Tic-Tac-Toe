@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Tic Tac Toe</title>
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+
+<script>
+    var currentPlayer = prompt("Who is The Current Player X=1 O=2", "1");
+    while (currentPlayer != null && currentPlayer != 1 && currentPlayer != 2) {
+        currentPlayer = prompt("Who is The Current Player X=1 O=2", "1");
+    }
+    currentPlayer = currentPlayer == 2 ? 2 : 1;
+    var firstPlayer = currentPlayer;
+    var gameOver = false;
+    var moves = 0;
+    var grid = new Array(3);
+    grid[0] = new Array(3);
+    grid[1] = new Array(3);
+    grid[2] = new Array(3);
+
+
+    for (var i = 0; i <= 2; i++) {
+        for (var j = 0; j <= 2; j++) {
+            grid[i][j] = 0;
+        }
+    }
+
+    // Checks If Grid Is Already Clicked
+    function clickCell(x, y) {
+        if (gameOver) {
+            return;
+        }
+
+        if (grid[x][y] > 0) {
+            alert("Don't Try To Cheat Bud!!!!!");
+        }
+
+
+        // Clicking Of Boxes
+        else {
+            if (currentPlayer == 1) {
+                document.getElementById("cell_" + x + "_" + y).style.color = "#3F88C5";
+                document.getElementById("cell_" + x + "_" + y).innerHTML = "X";
+                grid[x][y] = 1;
+                currentPlayer = 2;
+            } else {
+                document.getElementById("cell_" + x + "_" + y).style.color = "#E2C290";
+                document.getElementById("cell_" + x + "_" + y).innerHTML = "O";
+                grid[x][y] = 2;
+                currentPlayer = 1;
+            }
+            moves++;
+            checkWinner();
+        }
+    }
+
+    function playerName(player) {
+        return player == 1 ? "X" : "O";
+    }
+
+    function checkWinner() {
+        var lines = [
+            [grid[0][0], grid[0][1], grid[0][2]],
+            [grid[1][0], grid[1][1], grid[1][2]],
+            [grid[2][0], grid[2][1], grid[2][2]],
+            [grid[0][0], grid[1][0], grid[2][0]],
+            [grid[0][1], grid[1][1], grid[2][1]],
+            [grid[0][2], grid[1][2], grid[2][2]],
+            [grid[0][0], grid[1][1], grid[2][2]],
+            [grid[0][2], grid[1][1], grid[2][0]]
+        ];
+        for (var i = 0; i < lines.length; i++) {
+            if (lines[i][0] > 0 && lines[i][0] == lines[i][1] && lines[i][1] == lines[i][2]) {
+                gameOver = true;
+                document.getElementById("status").innerHTML = "Player " + playerName(lines[i][0]) + " Wins!";
+                return;
+            }
+        }
+        if (moves == 9) {
+            gameOver = true;
+            document.getElementById("status").innerHTML = "It's A Draw!";
+            return;
+        }
+        document.getElementById("status").innerHTML = "Player " + playerName(currentPlayer) + " Turn";
+    }
+
+    // Reset Game
+
+    function reset() {
+        for (var i = 0; i <= 2; i++) {
+            for (var j = 0; j <= 2; j++) {
+                grid[i][j] = 0;
+                document.getElementById("cell_" + i + "_" + j).innerHTML = "&nbsp;";
+            }
+        }
+        currentPlayer = firstPlayer;
+        gameOver = false;
+        moves = 0;
+        checkWinner();
+    }
+</script>
+
+<style>
+    h1 {
+        text-align: center;
+        font-family: 'Indie Flower', cursive;
+        font-size: 53px;
+    }
+    
+    #status {
+        font-family: 'Indie Flower', cursive;
+        font-size: 30px;
+        font-weight: bold;
+    }
+    
+    div {
+        text-align: center;
+        margin: 0px auto;
+        text-align: center;
+        margin: auto;
+    }
+    
+    table {
+        margin: auto;
+    }
+    
+    body {
+        background-color: #02c39a;
+    }
+    
+    .cell {
+        width: 80px;
+        height: 80px;
+        border: 5px solid #000000;
+        background: #FFFFFF;
+        font-size: 46pt;
+        font-family: arial;
+        font-weight: bold;
+        text-align: center;
+        margin: auto;
+    }
+    
+    fieldset {
+        text-align: center;
+        margin: auto;
+    }
+    
+    .cell:hover {
+        background: #C2DBFC;
+        text-align: center;
+    }
+</style>
+</head>
+
+<body onload="reset();">
+    <h1>Tic Tac Toe</h1>
+
+
+
+    <fieldset>
+        <p>Please Reload The Page To Choose Player Who Goes First Again</p>
+
+        <div>
+            <Table>
+                <tr>
+                    <td id="cell_0_0" class="cell" onClick="JavaScript: clickCell(0,0);">&nbsp;</td>
+                    <td id="cell_0_1" class="cell" onClick="JavaScript: clickCell(0,1);">&nbsp;</td>
+                    <td id="cell_0_2" class="cell" onClick="JavaScript: clickCell(0,2);">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td id="cell_1_0" class="cell" onClick="JavaScript: clickCell(1,0);">&nbsp;</td>
+                    <td id="cell_1_1" class="cell" onClick="JavaScript: clickCell(1,1);">&nbsp;</td>
+                    <td id="cell_1_2" class="cell" onClick="JavaScript: clickCell(1,2);">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td id="cell_2_0" class="cell" onClick="JavaScript: clickCell(2,0);">&nbsp;</td>
+                    <td id="cell_2_1" class="cell" onClick="JavaScript: clickCell(2,1);">&nbsp;</td>
+                    <td id="cell_2_2" class="cell" onClick="JavaScript: clickCell(2,2);">&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+        <p id="status"></p>
+        <input type=button onClick="Javascript: reset();" value="Reset">
+        <br/><br/>
+    </fieldset>
+
+</body>
+
+</html>
